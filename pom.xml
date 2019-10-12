@@ -12,7 +12,7 @@
         <module>com.im.route</module>
         <module>com.im.domain</module>
         <module>com.im.service</module>
-        <module>com.im.server</module>
+        <module>com.im.socket</module>
         <module>com.im.rpc</module>
     </modules>
 
