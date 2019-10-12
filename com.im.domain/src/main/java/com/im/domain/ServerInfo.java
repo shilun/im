@@ -1,4 +1,4 @@
-package com.im.domain.route;
+package com.im.domain;
 
 import com.common.util.AbstractBaseEntity;
 import lombok.Data;
@@ -21,6 +21,11 @@ public class ServerInfo extends AbstractBaseEntity {
      * ip地址
      */
     private String ip;
+
+    /**
+     * 端口
+     */
+    private String port;
     /**
      * 最大连接数
      */
