@@ -4,18 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>com.im</artifactId>
-        <groupId>com.im</groupId>
+        <groupId>com.bsm</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>com.im.domain</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>springboot</groupId>
-            <artifactId>common</artifactId>
-            <version>2.1.1</version>
-        </dependency>
-    </dependencies>
 </project>

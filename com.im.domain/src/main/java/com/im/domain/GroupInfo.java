@@ -4,6 +4,8 @@ import com.common.util.AbstractBaseEntity;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @Document
 public class GroupInfo extends AbstractBaseEntity {
@@ -20,4 +22,14 @@ public class GroupInfo extends AbstractBaseEntity {
      * 群图标
      */
     private String icon;
+
+    /**
+     * 组用户
+     */
+    private List<GroupUserRel> users;
+
+    /**
+     * 描述
+     */
+    private String desc;
 }

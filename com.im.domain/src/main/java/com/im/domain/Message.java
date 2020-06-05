@@ -1,6 +1,6 @@
 package com.im.domain;
 
-import com.common.util.AbstractBaseEntity;
+import com.im.domain.model.ContentTypeEnum;
 import lombok.Data;
 
 @Data
@@ -9,17 +9,16 @@ import lombok.Data;
  * 当单聊时消息接收确认时直接清楚
  * 对于群聊保留1周数据
  */
-public  class ChatContent extends AbstractBaseEntity {
+public  class Message {
     /**
      * 发送者
      */
     private String senderPin;
 
     /**
-     * 1 单聊
-     * 2 群聊
+     * 内容类型
      */
-    private Integer dataType;
+    private ContentTypeEnum contentType;
     /**
      * 内容
      */
