@@ -6,6 +6,8 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.Max;
+
 
 /**
  * 服务器信息
@@ -14,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 @CompoundIndexes(
         {
-                @CompoundIndex(name = "uniqueIPIndex", def = "{'ip':1}", unique = true),
+                @CompoundIndex(name = "uniqueIPIndex", def = "{'ip':1,port:1}", unique = true),
         })
 public class ServerInfo extends AbstractBaseEntity {
     /**
@@ -25,9 +27,10 @@ public class ServerInfo extends AbstractBaseEntity {
     /**
      * 端口
      */
-    private String port;
+    private Integer port;
     /**
      * 最大连接数
      */
+    @Max(1000)
     private Integer maxClient;
 }

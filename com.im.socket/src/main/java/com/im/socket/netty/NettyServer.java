@@ -1,7 +1,5 @@
-package com.im.socket.application;
+package com.im.socket.netty;
 
-import com.im.socket.netty.BinaryWebSocketFrameHandler;
-import com.im.socket.netty.TextWebSocketHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
@@ -19,6 +17,7 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -30,15 +29,10 @@ public class NettyServer  {
     private EventLoopGroup boss = null;
     private EventLoopGroup worker = null;
     @Autowired
+    @Lazy
     private TextWebSocketHandler serverHandler;
+
     @PostConstruct
-    public void init()  {
-        try {
-            start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     public void start() throws Exception {
         //负责处理客户端连接的线程池
         boss = new NioEventLoopGroup();
@@ -66,12 +60,11 @@ public class NettyServer  {
                                 // https://github.com/netty/netty/issues/1112 https://github.com/netty/netty/pull/1207
                                 .addLast(new WebSocketFrameAggregator(10 * 1024 * 1024))
                                 // 服务器端向外暴露的 web socket 端点，当客户端传递比较大的对象时，maxFrameSize参数的值需要调大
-                                .addLast(new WebSocketServerProtocolHandler("/chat", null, true, 10485760))
+                                .addLast(new WebSocketServerProtocolHandler( "/", true, 10485760))
                                 // 自定义处理器 - 处理 web socket 文本消息
                                 .addLast(serverHandler)
                                 // 自定义处理器 - 处理 web socket 二进制消息
                                 .addLast(new BinaryWebSocketFrameHandler());
-
                     }
                 });
         bind(serverBootstrap, 8989);

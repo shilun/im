@@ -7,6 +7,7 @@ import com.im.socket.annotation.MessageMapping;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class TextWebSocketHandler extends SimpleChannelInboundHandler<TextWebSoc
     private ObjectMapper mapper;
 
     @Resource
-    private WebSocketlHandlerPool handlerPool;
+    private ChannelGroup channelGroup;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
@@ -66,22 +67,18 @@ public class TextWebSocketHandler extends SimpleChannelInboundHandler<TextWebSoc
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        handlerPool.channelGroup.add(ctx.channel());
+        channelGroup.add(ctx.channel());
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        handlerPool.channelGroup.remove(ctx.channel());
+        channelGroup.remove(ctx.channel());
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) {
         String contenxt = msg.text();
         try {
-            MessageData tt = new MessageData();
-            tt.setDestination("/login/in");
-            tt.setContent("fdsadfsa");
-            contenxt = mapper.writeValueAsString(tt);
             MessageData messageData = mapper.readValue(contenxt, MessageData.class);
             MessageMethod method = socketController.get(messageData.getDestination());
             if (method == null) {
@@ -106,7 +103,7 @@ public class TextWebSocketHandler extends SimpleChannelInboundHandler<TextWebSoc
             }
             method.getMethod().invoke(method.bean, values);
         } catch (Exception e) {
-            throw new ApplicationException(e);
+            log.error("socket.error:text.{}" + contenxt, e);
         }
     }
 

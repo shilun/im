@@ -17,17 +17,14 @@ public class GroupInfo extends AbstractBaseEntity {
      * 群签名
      */
     private String sign;
-
     /**
      * 群图标
      */
     private String icon;
-
     /**
      * 组用户
      */
     private List<GroupUserRel> users;
-
     /**
      * 描述
      */
